@@ -16,24 +16,24 @@ export default defineConfig({
         theme_color: '#0f172a',
         background_color: '#f8fafc',
         display: 'standalone',
-        start_url: '/',
-        scope: '/',
+        start_url: '/attendsure/',
+        scope: '/attendsure/',
         orientation: 'portrait-primary',
         icons: [
           {
-            src: '/icons/icon-192.svg',
+            src: 'icons/icon-192.svg',
             sizes: '192x192',
             type: 'image/svg+xml',
             purpose: 'any'
           },
           {
-            src: '/icons/icon-512.svg',
+            src: 'icons/icon-512.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'any'
           },
           {
-            src: '/icons/icon-maskable.svg',
+            src: 'icons/icon-maskable.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'maskable'
