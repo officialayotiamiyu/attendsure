@@ -221,7 +221,8 @@ as $$
   from public.organization_members om
   where om.user_id = auth.uid()
     and om.status = 'ACTIVE'
-  order by om.created_at asc
+  order by case when om.role = 'OWNER' then 0 else 1 end,
+           om.created_at asc
   limit 1;
 $$;
 

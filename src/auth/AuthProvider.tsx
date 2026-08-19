@@ -15,6 +15,11 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+export function resolveActiveMembership(memberships: OrganizationMembership[] | null | undefined) {
+  if (!memberships || memberships.length === 0) return null;
+  return memberships.find((item) => item.role === 'OWNER') ?? memberships[0] ?? null;
+}
+
 async function loadContext(user: User | null) {
   if (!user) {
     return {
@@ -24,7 +29,7 @@ async function loadContext(user: User | null) {
     };
   }
 
-  const [{ data: profile }, { data: membership }] = await Promise.all([
+  const [{ data: profile }, { data: memberships }] = await Promise.all([
     supabase.from('profiles').select('*').eq('id', user.id).maybeSingle<Profile>(),
     supabase
       .from('organization_members')
@@ -32,9 +37,9 @@ async function loadContext(user: User | null) {
       .eq('user_id', user.id)
       .eq('status', 'ACTIVE')
       .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle<OrganizationMembership>()
   ]);
+
+  const membership = resolveActiveMembership(memberships ?? null);
 
   let organization: Organization | null = null;
   if (membership?.organization_id) {
