@@ -21,10 +21,17 @@ jobs:
           cache: npm
 
       - run: npm ci
+      
+      - name: Create .env file
+        run: |
+          echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" > .env.production
+          echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> .env.production
+          echo "VITE_APP_NAME=AttendSure" >> .env.production
+      
       - run: npm run build
         env:
-          VITE_SUPABASE_URL: https://rpeivffnkmgivmwwqogy.supabase.co
-          VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwZWl2ZmZua21naXZtd3dxb2d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNDY5OTMsImV4cCI6MjEwMjYyMjk5M30.G9FknGk_yNDdz6qJS6ClcrsYUFVerXtrmSRduqvQsvA
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_APP_NAME: AttendSure
 
       - uses: peaceiris/actions-gh-pages@v4
